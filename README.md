@@ -21,6 +21,8 @@ app.set("view engine", "vm");
 app.engine("vm", vext.__express);
 ```
 
+You can view [examples](./examples) for detail. ;-)
+
 ## APIs
 
 There is only one API now. :-(

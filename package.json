@@ -15,10 +15,10 @@
   ],
   "main": "index.js",
   "scripts": {
-    "prebuild": "mkdir src && mv index.js src/index.js",
-    "build": "babel src -d . --presets=es2015",
+    "prebuild": "mv lib src",
+    "build": "babel src -d lib --presets=es2015",
     "prepublish": "npm run build",
-    "postpublish": "rm -rf index.js && mv src/index.js index.js && rm -rf src"
+    "postpublish": "rm -rf lib && mv src lib"
   },
   "author": "Ourai Lin <ourairyu@gmail.com> (http://ourai.ws/)",
   "repository": {
