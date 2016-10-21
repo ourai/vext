@@ -13,8 +13,8 @@ const vext = module.exports = {
   __settings: {}
 };
 
-Object.keys(DEFAULTS).forEach(function( v, k ) {
-  vext.__settings[k.toLowerCase()] = v;
+Object.keys(DEFAULTS).forEach(function( k, i ) {
+  vext.__settings[k.toLowerCase()] = DEFAULTS[k];
 });
 
 vext.set = function( k, v ) {
@@ -26,14 +26,16 @@ vext.set = function( k, v ) {
 };
 
 vext.__express = function( templatePath, options, callback ) {
+  let cwd = process.cwd();
+  
   let macros = {
     parse: function( file ) {
-      return this.eval(fs.readFileSync(path.join(process.cwd(), file)).toString());
+      return this.eval(fs.readFileSync(path.join(cwd, file)).toString());
     }
   };
 
   let content = fs.readFileSync(templatePath).toString();
-  let layout = fs.readFileSync(path.join(__dirname, vext.__settings.layout)).toString();
+  let layout = fs.readFileSync(path.join(cwd, vext.__settings.layout)).toString();
 
   let directives = [];
   let htmlStr = [];
@@ -58,10 +60,10 @@ vext.__express = function( templatePath, options, callback ) {
   directives.push([{type: "define", id: "screen_content"}, htmlStr.join("")].concat(parseMacros));
 
   try {
-    fn(null, (new velocity.Compile(directives.concat(velocity.parse(layout)))).render(options, macros));
+    callback(null, (new velocity.Compile(directives.concat(velocity.parse(layout)))).render(options, macros));
   }
   catch( err ) {
     console.log(err);
-    fn(err);
+    callback(err);
   }
 };
