@@ -3,7 +3,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const velocity = require("velocity");
+const velocity = require("velocityjs");
 
 const DEFAULTS = {
   LAYOUT: "template/layouts/default.vm"
@@ -27,7 +27,7 @@ vext.set = function( k, v ) {
 
 vext.__express = function( templatePath, options, callback ) {
   let cwd = process.cwd();
-  
+
   let macros = {
     parse: function( file ) {
       return this.eval(fs.readFileSync(path.join(cwd, file)).toString());
